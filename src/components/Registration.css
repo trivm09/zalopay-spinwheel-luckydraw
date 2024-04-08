@@ -1,0 +1,74 @@
+@font-face {
+	font-family: "MyriadPro"; /* You can choose any name */
+	src: url("../assets/fonts/MyriadPro-Regular.otf"); /* Replace with the path to your font file */
+}
+
+.Background-Registration {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background: url("../../public/background-registration.png") no-repeat center
+		center;
+	background-size: cover;
+	z-index: -1;
+}
+
+.FormControl {
+	display: flex;
+	height: 1200px;
+	justify-content: flex-end;
+	align-items: center;
+	flex-direction: column;
+}
+
+.InputContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 65vw;
+	height: 100px;
+	border: 5px solid rgba(255, 255, 255, 0.8);
+	box-shadow: 0 0 20px #ffffff;
+	padding: 25px;
+	margin: 25px 0px;
+}
+
+.Input {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.05);
+	border: none;
+	color: white;
+	padding: 10px;
+	font-size: 3rem;
+	font-weight: bold;
+}
+
+.Input:focus {
+	outline: none;
+}
+
+.Input::placeholder {
+	color: white;
+	font-size: 3rem;
+	font-weight: bold;
+	font-family: "MyriadPro", sans-serif;
+	-webkit-text-stroke: 0.25px rgb(12, 27, 114);
+	text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+}
+
+.SubmitButton {
+	width: 100%;
+	height: 100px;
+	background-color: rgba(255, 255, 255, 0.05);
+	border: 5px solid rgba(255, 255, 255, 0.8);
+	-webkit-text-stroke: 0.5px rgb(12, 27, 114);
+	text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+	color: white;
+	font-size: 3rem;
+	font-weight: bold;
+	cursor: pointer;
+	padding: 20px;
+	box-shadow: 0 0 20px #ffffff;
+}

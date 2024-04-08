@@ -1,5 +1,6 @@
 import "./SpinWheel.css";
-import React, { useState } from "react";
+import { useState } from "react";
+import spinMusic from "../assets/music/spin-music.mp3";
 
 const SpinWheel = () => {
 	const [angle, setAngle] = useState(0);
@@ -16,8 +17,15 @@ const SpinWheel = () => {
 
 	let weightedItems = items.flatMap((item) => Array(item.pcs).fill(item));
 
+	// Create a new Audio object
+	const audio = new Audio(spinMusic);
+
 	const spinWheel = () => {
+		// If the wheel is already spinning, return early
+		if (spinning) return;
+
 		setSpinning(true);
+		audio.play();
 		setTimeout(() => {
 			// Chọn ngẫu nhiên một phần tử từ mảng weightedItems
 			const selectedItem =
@@ -35,7 +43,7 @@ const SpinWheel = () => {
 			weightedItems = items.flatMap((item) => Array(item.pcs).fill(item));
 
 			setSpinning(false);
-		}, 5000); // Delay 2 giây trước khi set góc và kết thúc animation
+		}, 6000);
 	};
 
 	return (
