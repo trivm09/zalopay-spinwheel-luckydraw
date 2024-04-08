@@ -3,13 +3,18 @@
 	src: url("../assets/fonts/MyriadPro-Regular.otf"); /* Replace with the path to your font file */
 }
 
+@font-face {
+	font-family: "SVN-Gotham-Bold"; /* You can choose any name */
+	src: url("../assets/fonts/SVN-Gotham-Bold.ttf"); /* Replace with the path to your font file */
+}
+
 .Background-Registration {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background: url("../../public/background-registration.png") no-repeat center
-		center;
+	background: url("../../src/assets/images/background-registration.png")
+		no-repeat center center;
 	background-size: cover;
 	z-index: -1;
 }
@@ -41,7 +46,7 @@
 	border: none;
 	color: white;
 	padding: 10px;
-	font-size: 3rem;
+	font-size: 1.5rem;
 	font-weight: bold;
 }
 
@@ -51,11 +56,11 @@
 
 .Input::placeholder {
 	color: white;
-	font-size: 3rem;
+	font-size: 1.5em;
 	font-weight: bold;
-	font-family: "MyriadPro", sans-serif;
-	-webkit-text-stroke: 0.25px rgb(12, 27, 114);
-	text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+	font-family: "SVN-Gotham-Bold", sans-serif;
+	text-shadow: 4px 4px 8px rgba(0, 0, 0, 1);
+	-webkit-text-stroke: 2px rgba(2, 51, 193, 0.8);
 }
 
 .SubmitButton {

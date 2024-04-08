@@ -47,7 +47,7 @@ const SpinWheel = () => {
 	};
 
 	return (
-		<div className="Background">
+		<div className="background">
 			<div
 				key={spinning} // Add this line
 				className={`Wheel ${spinning ? "spinning" : ""}`}
