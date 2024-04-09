@@ -142,9 +142,7 @@ const SpinWheel = () => {
 			{spinning ? (
 				""
 			) : (
-				<button className="BackBtn" onClick={handlerBackBtn}>
-					Back
-				</button>
+				<div className="BackBtn" onClick={handlerBackBtn}></div>
 			)}
 		</div>
 	);
