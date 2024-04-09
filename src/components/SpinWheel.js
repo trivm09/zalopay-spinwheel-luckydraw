@@ -2,8 +2,11 @@ import "./SpinWheel.css";
 import { useState, useEffect, useCallback } from "react";
 import spinMusic from "../assets/music/spin-music.mp3";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SpinWheel = () => {
+	const navigate = useNavigate();
+
 	const [angle, setAngle] = useState(0);
 	const [spinning, setSpinning] = useState(false);
 	const [items, setItems] = useState([]);
@@ -124,6 +127,10 @@ const SpinWheel = () => {
 		}, 4000);
 	};
 
+	const handlerBackBtn = () => {
+		navigate("/");
+	};
+
 	return (
 		<div className="background">
 			<div
@@ -132,7 +139,13 @@ const SpinWheel = () => {
 				style={{ transform: `rotate(${angle}deg)` }}
 			></div>
 			<div className="spin-btn" onClick={spinWheel}></div>
-			{spinning ? "" : <button className="BackBtn">Back</button>}
+			{spinning ? (
+				""
+			) : (
+				<button className="BackBtn" onClick={handlerBackBtn}>
+					Back
+				</button>
+			)}
 		</div>
 	);
 };
