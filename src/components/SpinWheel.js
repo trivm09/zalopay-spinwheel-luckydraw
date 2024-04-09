@@ -132,6 +132,7 @@ const SpinWheel = () => {
 				style={{ transform: `rotate(${angle}deg)` }}
 			></div>
 			<div className="spin-btn" onClick={spinWheel}></div>
+			{spinning ? "" : <button className="BackBtn">Back</button>}
 		</div>
 	);
 };

@@ -47,3 +47,20 @@
 .spin-btn:active {
 	transform: translate(-35%, -50%) scale(1.1);
 }
+
+.BackBtn {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	background-color: rgba(255, 255, 255, 0.05);
+	border: 5px solid rgba(255, 255, 255, 0.8);
+	-webkit-text-stroke: 0.5px rgb(12, 27, 114);
+	text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	padding: 20px;
+	box-shadow: 0 0 20px #ffffff;
+	border-radius: 10px;
+}
