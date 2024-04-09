@@ -1,49 +1,127 @@
 import "./SpinWheel.css";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import spinMusic from "../assets/music/spin-music.mp3";
+import Axios from "axios";
 
 const SpinWheel = () => {
 	const [angle, setAngle] = useState(0);
 	const [spinning, setSpinning] = useState(false);
+	const [items, setItems] = useState([]);
 
-	let items = [
-		{ id: 1, name: "Pin + voucher 100k", pcs: 20, angle: 120 },
-		{ id: 2, name: "Pin + voucher 200k", pcs: 40, angle: 300 },
-		{ id: 3, name: "Túi đeo chéo + voucher giảm 5%", pcs: 10, angle: 180 },
-		{ id: 4, name: "Voucher 500K + gấu bông", pcs: 8, angle: 0 },
-		{ id: 5, name: "Voucher 1 triệu", pcs: 1, angle: 60 },
-		{ id: 6, name: "gấu bông", pcs: 30, angle: 240 },
-	];
+	const getListGiftSet = async () => {
+		try {
+			const response = await Axios.get("https://vominhtri.vn/giftset/", {
+				auth: {
+					username: "trivo",
+					password: "Admin@123a@",
+				},
+			});
+			let giftSet = response.data;
+			return giftSet;
+		} catch (error) {
+			console.log(`Error: ${error}`);
+		}
+	};
+
+	const getLastRegistratorId = async () => {
+		try {
+			const response = await Axios.get(
+				`https://vominhtri.vn/registrator/get_latest/`,
+				{
+					auth: {
+						username: "trivo",
+						password: "Admin@123a@",
+					},
+				}
+			);
+			return response.data.latest_id;
+		} catch (error) {
+			console.log(`Error: ${error}`);
+		}
+	};
+
+	const updateRegistratorGiftSet = async (registratorId, giftSetName) => {
+		try {
+			await Axios.patch(
+				`https://vominhtri.vn/registrator/${registratorId}/`,
+				{ gift_set: giftSetName },
+				{
+					auth: {
+						username: "trivo",
+						password: "Admin@123a@",
+					},
+				}
+			);
+		} catch (error) {
+			console.log(`Error: ${error}`);
+		}
+	};
+
+	const updateItems = useCallback(async () => {
+		const giftSet = await getListGiftSet();
+		setItems(giftSet);
+	}, []);
+
+	useEffect(() => {
+		updateItems();
+	}, [updateItems]);
 
 	let weightedItems = items.flatMap((item) => Array(item.pcs).fill(item));
 
 	// Create a new Audio object
 	const audio = new Audio(spinMusic);
 
-	const spinWheel = () => {
+	const spinWheel = async () => {
 		// If the wheel is already spinning, return early
 		if (spinning) return;
 
+		// Fetch the list of gift sets from the API
+		const giftSet = await getListGiftSet();
+		setItems(giftSet);
+
 		setSpinning(true);
 		audio.play();
-		setTimeout(() => {
+		setTimeout(async () => {
 			// Chọn ngẫu nhiên một phần tử từ mảng weightedItems
 			const selectedItem =
 				weightedItems[Math.floor(Math.random() * weightedItems.length)];
 			setAngle(selectedItem.angle);
 
 			// Trừ 1 pcs sau mỗi lần quay trúng
-			items = items.map((item) =>
-				item.id === selectedItem.id
-					? { ...item, pcs: item.pcs - 1 }
-					: item
-			);
+			selectedItem.pcs -= 1;
+
+			try {
+				await Axios.patch(
+					`https://vominhtri.vn/giftset/${selectedItem.id}/`,
+					selectedItem,
+					{
+						auth: {
+							username: "trivo",
+							password: "Admin@123a@",
+						},
+					}
+				);
+				// Fetch the last registrator ID from the API
+				const lastRegistratorId = await getLastRegistratorId();
+				// console.log(`Last registrator ID: ${lastRegistratorId}`);
+
+				// Update the giftset name for the last registrator
+				await updateRegistratorGiftSet(
+					lastRegistratorId,
+					selectedItem.name
+				);
+
+				// Update items
+				updateItems();
+			} catch (error) {
+				console.log(`Error: ${error}`);
+			}
 
 			// Cập nhật weightedItems sau mỗi lần quay
 			weightedItems = items.flatMap((item) => Array(item.pcs).fill(item));
 
 			setSpinning(false);
-		}, 6000);
+		}, 4000);
 	};
 
 	return (
