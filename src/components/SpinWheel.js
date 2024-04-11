@@ -10,7 +10,7 @@ const SpinWheel = () => {
 	const [angle, setAngle] = useState(0);
 	const [spinning, setSpinning] = useState(false);
 	const [items, setItems] = useState([]);
-	const [errorMessage, setErrorMessage] = useState(true);
+	const [errorMessage, setErrorMessage] = useState(false);
 
 	const getListGiftSet = async () => {
 		try {
