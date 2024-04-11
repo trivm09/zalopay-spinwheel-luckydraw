@@ -85,6 +85,14 @@ const SpinWheel = () => {
 		setSpinning(true);
 		audio.play();
 		setTimeout(async () => {
+			// Filter out items with zero quantity
+			const availableItems = weightedItems.filter((item) => item.pcs > 0);
+			// If there are no available items, stop here
+			if (availableItems.length === 0) {
+				console.log("No more gifts available");
+				setSpinning(false);
+				return;
+			}
 			// Chọn ngẫu nhiên một phần tử từ mảng weightedItems
 			const selectedItem =
 				weightedItems[Math.floor(Math.random() * weightedItems.length)];
