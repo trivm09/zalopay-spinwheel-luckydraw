@@ -21,6 +21,7 @@ const Registration = () => {
 					name: name,
 					phone_number: phoneNumber,
 					email: email,
+					gift_set: "1",
 				},
 				{
 					auth: {

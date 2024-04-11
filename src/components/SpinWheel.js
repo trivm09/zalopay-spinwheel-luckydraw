@@ -61,6 +61,23 @@ const SpinWheel = () => {
 		}
 	};
 
+	const getRegistratorDataById = async (registratorId) => {
+		try {
+			const response = await Axios.get(
+				`https://vominhtri.vn/registrator/${registratorId}/`,
+				{
+					auth: {
+						username: "trivo",
+						password: "Admin@123a@",
+					},
+				}
+			);
+			return response.data.gift_set;
+		} catch (error) {
+			console.log(`Error: ${error}`);
+		}
+	};
+
 	const updateItems = useCallback(async () => {
 		const giftSet = await getListGiftSet();
 		setItems(giftSet);
@@ -81,6 +98,15 @@ const SpinWheel = () => {
 
 		const availableItems = weightedItems.filter((item) => item.pcs > 0);
 		if (availableItems.length === 0) {
+			return;
+		}
+
+		const lastRegistratorId = await getLastRegistratorId();
+		const lastRegistratorData = await getRegistratorDataById(
+			lastRegistratorId
+		);
+
+		if (lastRegistratorData !== "1") {
 			return;
 		}
 
