@@ -10,6 +10,7 @@ const SpinWheel = () => {
 	const [angle, setAngle] = useState(0);
 	const [spinning, setSpinning] = useState(false);
 	const [items, setItems] = useState([]);
+	const [errorMessage, setErrorMessage] = useState(true);
 
 	const getListGiftSet = async () => {
 		try {
@@ -89,7 +90,7 @@ const SpinWheel = () => {
 			const availableItems = weightedItems.filter((item) => item.pcs > 0);
 			// If there are no available items, stop here
 			if (availableItems.length === 0) {
-				console.log("No more gifts available");
+				setErrorMessage(true);
 				setSpinning(false);
 				return;
 			}
@@ -141,6 +142,9 @@ const SpinWheel = () => {
 
 	return (
 		<div className="background">
+			{errorMessage && (
+				<div className="Alert">No more gifts available</div>
+			)}
 			<div
 				key={spinning} // Add this line
 				className={`Wheel ${spinning ? "spinning" : ""}`}
