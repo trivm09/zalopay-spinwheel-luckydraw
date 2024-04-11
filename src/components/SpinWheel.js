@@ -79,6 +79,11 @@ const SpinWheel = () => {
 		// If the wheel is already spinning, return early
 		if (spinning) return;
 
+		const availableItems = weightedItems.filter((item) => item.pcs > 0);
+		if (availableItems.length === 0) {
+			return;
+		}
+
 		// Fetch the list of gift sets from the API
 		const giftSet = await getListGiftSet();
 		setItems(giftSet);
