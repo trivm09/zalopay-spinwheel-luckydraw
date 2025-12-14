@@ -3,6 +3,16 @@ import { useState, useEffect, useCallback } from "react";
 import spinMusic from "../assets/music/spin-music.mp3";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { mockAPI } from "../mockData";
+
+// Đặt true để dùng mock data, false để dùng API thật
+const USE_MOCK = true;
+
+const API_URL = process.env.REACT_APP_API_URL;
+const API_AUTH = {
+	username: process.env.REACT_APP_API_USERNAME,
+	password: process.env.REACT_APP_API_PASSWORD,
+};
 
 const SpinWheel = () => {
 	const navigate = useNavigate();
@@ -14,14 +24,13 @@ const SpinWheel = () => {
 
 	const getListGiftSet = async () => {
 		try {
-			const response = await Axios.get("https://vominhtri.vn/giftset/", {
-				auth: {
-					username: "trivo",
-					password: "Admin@123a@",
-				},
+			if (USE_MOCK) {
+				return await mockAPI.getGiftSet();
+			}
+			const response = await Axios.get(`${API_URL}/giftset/`, {
+				auth: API_AUTH,
 			});
-			let giftSet = response.data;
-			return giftSet;
+			return response.data;
 		} catch (error) {
 			console.log(`Error: ${error}`);
 		}
@@ -29,14 +38,13 @@ const SpinWheel = () => {
 
 	const getLastRegistratorId = async () => {
 		try {
+			if (USE_MOCK) {
+				const result = await mockAPI.getLatestRegistrator();
+				return result.latest_id;
+			}
 			const response = await Axios.get(
-				`https://vominhtri.vn/registrator/get_latest/`,
-				{
-					auth: {
-						username: "trivo",
-						password: "Admin@123a@",
-					},
-				}
+				`${API_URL}/registrator/get_latest/`,
+				{ auth: API_AUTH }
 			);
 			return response.data.latest_id;
 		} catch (error) {
@@ -46,15 +54,14 @@ const SpinWheel = () => {
 
 	const updateRegistratorGiftSet = async (registratorId, giftSetName) => {
 		try {
+			if (USE_MOCK) {
+				await mockAPI.updateRegistrator(registratorId, { gift_set: giftSetName });
+				return;
+			}
 			await Axios.patch(
-				`https://vominhtri.vn/registrator/${registratorId}/`,
+				`${API_URL}/registrator/${registratorId}/`,
 				{ gift_set: giftSetName },
-				{
-					auth: {
-						username: "trivo",
-						password: "Admin@123a@",
-					},
-				}
+				{ auth: API_AUTH }
 			);
 		} catch (error) {
 			console.log(`Error: ${error}`);
@@ -63,14 +70,13 @@ const SpinWheel = () => {
 
 	const getRegistratorDataById = async (registratorId) => {
 		try {
+			if (USE_MOCK) {
+				const registrator = await mockAPI.getRegistrator(registratorId);
+				return registrator?.gift_set;
+			}
 			const response = await Axios.get(
-				`https://vominhtri.vn/registrator/${registratorId}/`,
-				{
-					auth: {
-						username: "trivo",
-						password: "Admin@123a@",
-					},
-				}
+				`${API_URL}/registrator/${registratorId}/`,
+				{ auth: API_AUTH }
 			);
 			return response.data.gift_set;
 		} catch (error) {
@@ -134,16 +140,15 @@ const SpinWheel = () => {
 			selectedItem.pcs -= 1;
 
 			try {
-				await Axios.patch(
-					`https://vominhtri.vn/giftset/${selectedItem.id}/`,
-					selectedItem,
-					{
-						auth: {
-							username: "trivo",
-							password: "Admin@123a@",
-						},
-					}
-				);
+				if (USE_MOCK) {
+					await mockAPI.updateGiftSet(selectedItem.id, selectedItem);
+				} else {
+					await Axios.patch(
+						`${API_URL}/giftset/${selectedItem.id}/`,
+						selectedItem,
+						{ auth: API_AUTH }
+					);
+				}
 				// Fetch the last registrator ID from the API
 				const lastRegistratorId = await getLastRegistratorId();
 				// console.log(`Last registrator ID: ${lastRegistratorId}`);

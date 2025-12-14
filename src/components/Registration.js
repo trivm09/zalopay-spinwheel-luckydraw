@@ -2,6 +2,16 @@ import "./Registration.css";
 import Axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { mockAPI } from "../mockData";
+
+// Đặt true để dùng mock data, false để dùng API thật
+const USE_MOCK = true;
+
+const API_URL = process.env.REACT_APP_API_URL;
+const API_AUTH = {
+	username: process.env.REACT_APP_API_USERNAME,
+	password: process.env.REACT_APP_API_PASSWORD,
+};
 
 const Registration = () => {
 	const navigate = useNavigate();
@@ -15,29 +25,32 @@ const Registration = () => {
 		e.preventDefault();
 
 		try {
-			const response = await Axios.post(
-				"https://vominhtri.vn/registrator/",
-				{
-					name: name,
-					phone_number: phoneNumber,
-					email: email,
-					gift_set: "1",
-				},
-				{
-					auth: {
-						username: "trivo",
-						password: "Admin@123a@",
-					},
-				}
-			);
+			let response;
+			const registratorData = {
+				name: name,
+				phone_number: phoneNumber,
+				email: email,
+				gift_set: "1",
+			};
 
-			console.log(response.data); // Log the response data to the console
+			if (USE_MOCK) {
+				response = { data: await mockAPI.createRegistrator(registratorData) };
+			} else {
+				response = await Axios.post(
+					`${API_URL}/registrator/`,
+					registratorData,
+					{ auth: API_AUTH }
+				);
+			}
+
+			console.log(response.data);
 			setErrorMessage(false);
-			// Redirect to the SpinWheel page
 			navigate("/spin-wheel");
 		} catch (error) {
 			console.log(`Error: ${error}`);
-			console.log(error.response.data);
+			if (error.response) {
+				console.log(error.response.data);
+			}
 			setErrorMessage(true);
 		}
 

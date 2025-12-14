@@ -1,31 +1,139 @@
-# Create React App
+# Vòng Quay May Mắn (Spin Wheel Lucky Draw)
 
-This directory is a brief example of a [Create React App](https://github.com/facebook/create-react-app) site that can be deployed to Vercel with zero configuration.
+Ứng dụng vòng quay may mắn tương tác được xây dựng bằng React, dùng cho các sự kiện quay số trúng thưởng. Tích hợp animation mượt mà, hiệu ứng âm thanh và kết nối backend API.
 
-## Deploy Your Own
+## Tính năng
 
-Deploy your own Create React App project with Vercel.
+- **Form Đăng ký**: Thu thập thông tin người tham gia (họ tên, SĐT, email) với validation
+- **Vòng quay tương tác**: Animation CSS mượt mà kèm hiệu ứng âm thanh
+- **Hệ thống xác suất có trọng số**: Cấu hình phân phối giải thưởng dựa trên số lượng
+- **Quản lý giải thưởng real-time**: Tự động cập nhật số lượng qua REST API
+- **Chống đăng ký trùng**: Ngăn người dùng tham gia nhiều lần
+- **Responsive Design**: Hoạt động tốt trên cả desktop và mobile
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/create-react-app&template=create-react-app)
+## Công nghệ sử dụng
 
-_Live Example: https://create-react-template.vercel.app/_
+- **Frontend**: React 18, React Router v6
+- **HTTP Client**: Axios
+- **Styling**: CSS3 với custom animations
+- **Build Tool**: Create React App
+- **Deployment**: Hỗ trợ Vercel
 
-## Available Scripts
+## Demo
 
-In the project directory, you can run:
+<p align="center">
+  <img src="screenshots/demo.gif" alt="Demo vòng quay may mắn" width="300"/>
+</p>
 
-### `npm start`
+## Screenshots
 
-Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<p align="center">
+  <img src="screenshots/registration.png" alt="Trang Đăng ký" width="300"/>
+</p>
 
-The page will reload when you make changes. You may also see any lint errors in the console.
+<p align="center"><em>Trang đăng ký thông tin người tham gia</em></p>
 
-### `npm test`
+## Hướng dẫn cài đặt
 
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Yêu cầu
 
-### `npm run build`
+- Node.js 16+
+- npm hoặc pnpm
 
-Builds the app for production to the `build` folder.
+### Cài đặt
 
-It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include the hashes.
+1. Clone repository
+```bash
+git clone https://github.com/yourusername/spinwheel-luckydraw.git
+cd spinwheel-luckydraw
+```
+
+2. Cài đặt dependencies
+```bash
+npm install
+```
+
+3. Cấu hình environment variables
+```bash
+cp .env.example .env
+```
+
+Chỉnh sửa file `.env` với cấu hình API của bạn:
+```
+REACT_APP_API_URL=https://your-api-domain.com
+REACT_APP_API_USERNAME=your_username
+REACT_APP_API_PASSWORD=your_password
+```
+
+4. Chạy development server
+```bash
+npm start
+```
+
+Ứng dụng sẽ chạy tại [http://localhost:3000](http://localhost:3000)
+
+### Build cho Production
+
+```bash
+npm run build
+```
+
+## Cấu trúc Project
+
+```
+src/
+├── assets/
+│   ├── fonts/          # Font tùy chỉnh
+│   ├── images/         # Hình nền và vòng quay
+│   └── music/          # Âm thanh quay
+├── components/
+│   ├── Registration.js # Form đăng ký
+│   ├── Registration.css
+│   ├── SpinWheel.js    # Component vòng quay
+│   └── SpinWheel.css
+├── App.js              # App chính với routing
+└── index.js            # Entry point
+```
+
+## API Endpoints
+
+Ứng dụng yêu cầu REST API với các endpoint sau:
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| GET | `/giftset/` | Lấy danh sách giải thưởng |
+| PATCH | `/giftset/:id/` | Cập nhật số lượng giải |
+| POST | `/registrator/` | Đăng ký người tham gia mới |
+| GET | `/registrator/get_latest/` | Lấy đăng ký mới nhất |
+| GET | `/registrator/:id/` | Lấy thông tin đăng ký theo ID |
+| PATCH | `/registrator/:id/` | Cập nhật thông tin đăng ký |
+
+## Tùy chỉnh
+
+### Thay đổi giải thưởng
+
+Cập nhật hình vòng quay (`src/assets/images/wheel.png`) và cấu hình giải thưởng qua backend API.
+
+### Thay đổi giao diện
+
+Chỉnh sửa các file CSS trong `src/components/` để tùy chỉnh màu sắc, font và layout.
+
+## Deploy
+
+### Vercel (Khuyến nghị)
+
+[![Deploy với Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/spinwheel-luckydraw)
+
+Nhớ thêm environment variables trong Vercel dashboard.
+
+### Nền tảng khác
+
+Build project và deploy thư mục `build/` lên bất kỳ static hosting service nào.
+
+## License
+
+MIT License - Thoải mái sử dụng project này cho sự kiện của bạn!
+
+---
+
+Xây dựng với React
